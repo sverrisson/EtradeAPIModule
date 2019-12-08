@@ -3,3 +3,7 @@
 /Packages
 /*.xcodeproj
 xcuserdata/
+
+
+api_keys.json
+Package.resolved
