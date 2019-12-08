@@ -1,0 +1,2 @@
+// Add actual sandbox or consumer keys here and store as api_keys.json
+{"sandbox":{"secret":"secret","key":"0123456789"},"consumer":{"secret":"secret","key":"0123456789"}}
