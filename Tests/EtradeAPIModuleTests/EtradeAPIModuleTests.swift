@@ -1,15 +1,15 @@
 import XCTest
+import EtradeAPIModule
 @testable import EtradeAPIModule
 
 final class EtradeAPIModuleTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(EtradeAPIModule().text, "Hello, World!")
+    func testKeyImport() {
+        let mode: APIMode = .sandbox
+        let etrade = EtradeAPIModule(mode: mode)
+        XCTAssertNotNil(etrade.apiKeys.sandbox, "Sandbox keys not loading")
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testKeyImport", testKeyImport),
     ]
 }
