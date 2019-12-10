@@ -1,19 +1,19 @@
 import Foundation
 import XMLParsing
 
-enum APIMode {
+public enum APIMode {
     case sandbox
     case consumer
 }
 
-class EtradeAPIModule {
-    var apiKeys: API_Keys!
+public class EtradeAPIModule {
+    public var apiKeys: API_Keys!
     
-    init(mode: APIMode) {
+    public init(mode: APIMode) {
         // Import keys
     }
     
-    func importKeys(mode: APIMode) {
+    public func importKeys(mode: APIMode) {
         let name = ""
         if let keys: API_Keys = loadJSON(name) {
             apiKeys = keys

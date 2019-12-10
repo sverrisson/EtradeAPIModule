@@ -6,14 +6,14 @@
 //
 
 import Foundation
-import OSLog
+import os.log
 
-struct API_Keys: Codable {
+public struct API_Keys: Codable {
     var sandbox: Authorization?
     var consumer: Authorization?
 }
 
-struct Authorization: Codable {
+public struct Authorization: Codable {
     var secret: String?
     var key: String?
 }
@@ -25,12 +25,13 @@ struct Model: Codable {
 // MARK: - Data Import
 
 func loadJSON<T: Decodable>(_ name: String) -> T? {
-    try? JSONDecoder().decode(T.self, from: data(name))
+    try? JSONDecoder().decode(T.self, from: bundleData(name))
 }
 
 // Read from the app bundle
-func data(_ name: String) -> Data {
-    guard let url = Bundle.main.url(forResource: name, withExtension: "json") else { return Data()  }
+func bundleData(_ name: String) -> Data {
+    print("Path is \(Bundle.main.bundlePath)")
+    guard let url = Bundle.main.url(forResource: name, withExtension: "json") else {fatalError()}
     guard let data = try? Data(contentsOf: url) else { return Data() }
     return data
 }
