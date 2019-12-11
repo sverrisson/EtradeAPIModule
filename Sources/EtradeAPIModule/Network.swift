@@ -17,13 +17,16 @@ struct Constants {
 }
 
 func OAuthTokenHeader(key: String, secret: String) -> [String: String] {
+    let signature = secret
     return ["oauth_consumer_key": key,
             "oauth_timestamp" : String(Int(Date().timeIntervalSince1970)),
             "oauth_nonce": UUID().uuidString,
             "oauth_signature_method": "HMAC-SHA1",
-            "oauth_signature": secret,
+            "oauth_signature": signature,
             "oauth_callback": "oob",
-//            "Authorization: OAuth realm": ""
+            "Authorization: OAuth realm": "",
+            "oauth_version": "1.0",
+            "format": "json"
     ]
 }
 
@@ -34,19 +37,22 @@ func RequestToken(mode: APIMode, key: String, secret: String, callback: @escapin
         return
     }
     var request = URLRequest(url: url)
+    request.httpMethod = "POST"
     let headers = OAuthTokenHeader(key: key, secret: secret)
     headers.forEach { (arg0) in
         let (headerField, value) = arg0
         request.setValue(value, forHTTPHeaderField: headerField)
     }
+    os_log(.error, "Request sent: %{private}@", request.description)
     URLSession.shared.dataTask(with: request) { data, response, error in
         guard error == nil else {
             assertionFailure("Error!")
             return
         }
+        os_log(.error, "Server response: %{private}@", response?.description ?? "")
         guard let httpResponse = response as? HTTPURLResponse,
-            (200...399).contains(httpResponse.statusCode) else {
-                os_log(.error, "Server response: %{private}@", response?.description ?? "")
+            httpResponse.statusCode == 401 else {
+                print("String: \(String(data: data!, encoding: .utf8))")
                 assertionFailure("ServerError, headers sent: \(headers)")
                 return
         }
